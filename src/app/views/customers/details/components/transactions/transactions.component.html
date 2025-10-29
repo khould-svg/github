@@ -1,0 +1,19 @@
+<div *ngIf="ibanImageUrl">
+  <img [src]="ibanImageUrl" alt="IBAN Image" class="iban-image">
+</div>
+
+<div *ngIf="loading">Loading transactions...</div>
+
+<div *ngIf="!loading && transactions.length === 0">No transactions found</div>
+
+<div *ngIf="!loading && transactions.length > 0">
+  <div class="transaction" *ngFor="let txn of displayedTransactions">
+    <div class="txn-date">{{ txn.date | date:'mediumDate' }}</div>
+    <div class="txn-type">{{ txn.type }}</div>
+    <div class="txn-amount">{{ txn.amount | currency }}</div>
+  </div>
+
+  <div *ngIf="transactions.length > maxDisplay" class="view-more" (click)="toggleViewMore()">
+    {{ showAll ? 'View Less' : 'View More' }}
+  </div>
+</div>

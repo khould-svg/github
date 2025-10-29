@@ -1,0 +1,69 @@
+<app-page-title [title]="'PAYMENT.PAYMENTS_LIST' | translate" [subTitle]="'PAYMENT.PAYMENTS_LIST' | translate" />
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+        <h4 class="card-title">{{ 'PAYMENT.PAYMENTS_LIST' | translate }}</h4>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table align-middle text-nowrap table-hover table-centered mb-0">
+            <thead class="bg-light-subtle">
+              <tr>
+                <th>#</th>
+                <th>{{ 'PAYMENT.PAYMENT_ID' | translate }}</th>
+                <th>{{ 'PAYMENT.CUSTOMER' | translate }}</th>
+                <th>{{ 'PAYMENT.DATE' | translate }}</th>
+                <th>{{ 'PAYMENT.AMOUNT' | translate }}</th>
+                <th>{{ 'PAYMENT.METHOD' | translate }}</th>
+                <th>{{ 'PAYMENT.STATUS' | translate }}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let payment of paginatedPayments; let i = index">
+                <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.customerName }}</td>
+                <td>{{ payment.createdAt | date:'short' }}</td>
+                <td>{{ payment.currency }} {{ payment.amount }}</td>
+                <td>{{ payment.method }}</td>
+                <td>
+                  <span class="badge py-1 px-2 fs-12" [ngClass]="{
+                      'bg-success-subtle text-success': payment.status == 'Succeeded',
+                      'bg-warning-subtle text-warning': payment.status == 'Pending',
+                      'bg-danger-subtle text-danger': payment.status == 'Failed'
+                    }">
+                    {{ payment.status }}
+                  </span>
+                </td>
+              </tr>
+
+              <tr *ngIf="paginatedPayments.length === 0">
+                <td colspan="8" class="text-center py-4">
+                  {{ 'PAYMENT.NO_PAYMENTS' | translate }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <nav aria-label="Page navigation example">
+          <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize"
+            (pageChange)="refreshPayments()" class="pagination justify-content-end mb-0">
+            <ng-template ngbPaginationPrevious>
+              {{ 'COMMON.PREVIOUS' | translate }}
+            </ng-template>
+            <ng-template ngbPaginationNext>
+              {{ 'COMMON.NEXT' | translate }}
+            </ng-template>
+          </ngb-pagination>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

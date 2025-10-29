@@ -1,0 +1,33 @@
+<app-page-title title="{{ 'PROPERTY.TITLE' | translate }}" subTitle="{{ 'PROPERTY.SEARCH' | translate }}" />
+
+<div class="row">
+  <div class="col-lg-8 col-md-10">
+    <div class="card">
+      <div class="card-header bg-light-subtle">
+        <h4 class="card-title">{{ 'PROPERTY.SEARCH_PROPERTIES' | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 position-relative">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="{{ 'PROPERTY.SEARCH_PLACEHOLDER' | translate }}"
+            [value]="query"
+            (input)="handleInput($event)"
+            (keydown.enter)="tryNavigateSelected()"
+            list="propertyNames"
+            autocomplete="off"
+          />
+          <datalist id="propertyNames">
+            @for (name of filteredNames; track name) {
+              <option [value]="name"></option>
+            }
+          </datalist>
+        </div>
+        <button class="btn btn-primary" (click)="tryNavigateSelected()">{{ 'PROPERTY.GO_TO_DETAILS' | translate }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

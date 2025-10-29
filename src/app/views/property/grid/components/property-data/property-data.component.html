@@ -1,0 +1,74 @@
+<div class="row">
+  @for (item of paginatedList; track $index) {
+  <div class="col-lg-4 col-md-6">
+    <div class="card overflow-hidden">
+      <div class="position-relative">
+        <div id="carousel{{ $index }}" class="carousel slide">
+          <div class="carousel-inner">
+            <div class="carousel-item" *ngFor="let img of item.images; let i = index" [class.active]="i === 0">
+              <img [src]="img" class="d-block w-100 rounded-top" style="max-height: 200px;"
+                [alt]="'PROPERTY.PROPERTY_IMAGE' | translate">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + $index"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          </button>
+          <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + $index"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+        <span class="position-absolute top-0 end-0 p-1">
+          <span class="badge bg-{{ item.variant }} text-white fs-13">
+            @if (item.type != 'Sold') {
+            {{ 'PROPERTY.FOR_RENT' | translate }}
+            }
+            {{ item.type }}</span>
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-2">
+          <div class="avatar bg-light rounded">
+            <iconify-icon [icon]="item.icon" class="fs-24 text-primary avatar-title"></iconify-icon>
+          </div>
+          <div>
+            <a href="javascript:void(0);" class="text-dark fw-medium fs-16">{{
+              item.name
+              }}</a>
+            <p class="text-muted mb-0">{{ item.location }}</p>
+          </div>
+        </div>
+        <div class="row mt-2 g-2">
+          <div class="col-12">
+            <p class="text-muted fs-14 mb-0">
+              {{ item.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer bg-light-subtle d-flex justify-content-between align-items-center border-top">
+        <p class="fw-medium text-dark fs-16 mb-0">
+          {{ currency }}{{ item.totalValue}}
+        </p>
+        <div>
+          <a [routerLink]="['/properties', item._id]" class="link-primary fw-medium">
+            {{ 'PROPERTY.MORE_INQUIRY' | translate }} <i class="ri-arrow-right-line align-middle"></i>
+          </a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+<div class="p-3 border-top">
+  <nav [attr.aria-label]="('COMMON.PAGE_NAVIGATION' | translate)">
+    <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+      (pageChange)="refreshProperties()" class="pagination justify-content-end mb-0">
+      <ng-template ngbPaginationPrevious>{{ 'COMMON.PREVIOUS' | translate }}</ng-template>
+      <ng-template ngbPaginationNext>{{ 'COMMON.NEXT' | translate }}</ng-template>
+    </ngb-pagination>
+  </nav>
+</div>

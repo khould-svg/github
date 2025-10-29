@@ -1,0 +1,64 @@
+<div class="card shadow-sm border-0 rounded-4">
+  <div class="card-body p-4 p-md-5">
+
+    <div class="d-flex flex-column flex-md-row align-items-center mb-4 pb-3 border-bottom">
+      <div class="me-md-4 mb-3 mb-md-0 position-relative">
+        <img
+          [src]="customer?.profileImage || 'assets/images/default-avatar.png'"
+          alt="Customer Profile"
+          class="rounded-circle avatar-xl img-thumbnail border-0 shadow-sm"
+          style="width: 100px; height: 100px; object-fit: cover;"
+        />
+        <!-- Optional: Add a small online/offline status indicator -->
+        <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" *ngIf="customer?.status === 'active'">
+          <span class="visually-hidden">Online status</span>
+        </span>
+      </div>
+      <div class="text-center text-md-start">
+        <h2 class="fw-bold mb-1 text-dark">{{ customer?.name?.en || customer?.name?.ar || customer?.name }}</h2>
+        <a href="mailto:{{ customer?.email }}" class="link-primary fw-medium fs-16 text-decoration-none">{{ customer?.email }}</a>
+      </div>
+      <div class="ms-md-auto mt-3 mt-md-0 d-flex gap-2">
+        <button
+          (click)="emitEdit()"
+          class="btn btn-primary d-flex align-items-center justify-content-center px-4 py-2 rounded-pill shadow-sm"
+        >
+          <i class="ri-edit-fill me-2"></i> {{ 'COMMON.EDIT' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-4 col-md-6">
+        <p class="text-dark fw-semibold fs-15 mb-1 text-uppercase">{{ 'CUSTOMER_DETAILS.EMAIL_ADDRESS' | translate }}</p>
+        <p class="mb-0 text-muted">{{ customer?.email }}</p>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <p class="text-dark fw-semibold fs-15 mb-1 text-uppercase">{{ 'CUSTOMER_DETAILS.PHONE_NUMBER' | translate }}</p>
+        <p class="mb-0 text-muted">{{ customer?.phone || 'N/A' }}</p>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <p class="text-dark fw-semibold fs-15 mb-1 text-uppercase">{{ 'CUSTOMER_DETAILS.LOCATION' | translate }}</p>
+        <p class="mb-0 text-muted">{{ customer?.country || 'N/A' }}</p>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <p class="text-dark fw-semibold fs-15 mb-1 text-uppercase">{{ 'CUSTOMER_DETAILS.STATUS' | translate }}</p>
+        <p class="mb-0">
+          <span class="badge fs-12 px-2 py-1"
+  [ngClass]="{
+    'bg-primary text-white': customer?.status?.toLowerCase() === 'active',
+    'bg-warning text-dark': customer?.status?.toLowerCase() === 'pending',
+    'bg-danger text-white': customer?.status?.toLowerCase() === 'inactive',
+    'bg-success text-white': customer?.status?.toLowerCase() === 'confirmed'
+  }">
+  {{ (customer?.status || 'active') | uppercase }}
+</span>
+
+        </p>
+      </div>
+    </div>
+
+   
+
+  </div>
+</div>

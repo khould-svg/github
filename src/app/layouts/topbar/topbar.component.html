@@ -1,0 +1,81 @@
+<header class="">
+  <div class="topbar">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <div class="d-flex align-items-center gap-2">
+          <div class="topbar-item">
+            <button
+              type="button"
+              (click)="toggleMobileMenu()"
+              class="button-toggle-menu topbar-button"
+              [attr.aria-label]="('COMMON.MENU' | translate)"
+              [attr.title]="('COMMON.MENU' | translate)"
+            >
+              <i class="ri-menu-2-line fs-24"></i>
+              <span class="visually-hidden">{{ 'COMMON.MENU' | translate }}</span>
+            </button>
+          </div>
+
+          
+        </div>
+
+        <div class="d-flex align-items-center gap-1">
+
+
+          <div class="topbar-item d-none d-lg-flex">
+            <div class="dropdown language-dropdown">
+              <button 
+                class="btn btn-ghost-secondary btn-sm dropdown-toggle d-flex align-items-center gap-2" 
+                type="button" 
+                id="languageDropdown" 
+                data-bs-toggle="dropdown" 
+                aria-expanded="false">
+                <img 
+                  [src]="isRTL ? 'assets/images/flag/sa.svg' : 'assets/images/flag/us.svg'" 
+                  alt="Language" 
+                  class="rounded-circle language-flag" 
+                  width="20" 
+                  height="20">
+                <span class="fw-medium">{{ isRTL ? 'العربية' : 'English' }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                <li>
+                  <button 
+                    class="dropdown-item d-flex align-items-center gap-2" 
+                    (click)="switchLanguage('en')"
+                    [class.active]="!isRTL">
+                    <img src="assets/images/flag/us.svg" alt="English" width="20" height="20" class="rounded-circle language-flag">
+                    <span>English</span>
+                    <i class="ri-check-line ms-auto text-success" *ngIf="!isRTL"></i>
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    class="dropdown-item d-flex align-items-center gap-2" 
+                    (click)="switchLanguage('ar')"
+                    [class.active]="isRTL">
+                    <img src="assets/images/flag/sa.svg" alt="العربية" width="20" height="20" class="rounded-circle language-flag">
+                    <span>العربية</span>
+                    <i class="ri-check-line ms-auto text-success" *ngIf="isRTL"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          
+
+          <div  class="topbar-item">
+           
+            <div class="dropdown-menu-end">
+              <button class="dropdown-item text-danger" (click)="logout()">
+                <i class="bx bx-log-out align-middle me-2 fs-18"></i
+                ><span class="align-middle">{{ 'COMMON.LOGOUT' | translate }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

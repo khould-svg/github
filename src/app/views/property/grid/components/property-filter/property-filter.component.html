@@ -1,0 +1,23 @@
+<div class="card">
+
+  <div class="filter-box p-4 border rounded shadow ">
+    <h4 class="mb-3">{{ 'PROPERTY.FILTER_PROPERTIES' | translate }}</h4>
+
+    <input type="text" [(ngModel)]="searchText" (ngModelChange)="onSearchChange()"
+      [placeholder]="'PROPERTY.SEARCH_PLACEHOLDER' | translate" class="form-control mb-3" />
+    <div class="mb-3">
+      <label class="fw-bold">{{ 'PROPERTY.PRICE_RANGE' | translate }}</label>
+      <nouislider [config]="rangeConfig" [(ngModel)]="someRange" (ngModelChange)="applyFilters()"></nouislider>
+      <div class="mt-2">
+        {{ someRange[0] | currency : 'USD' }} - {{ someRange[1] | currency : 'USD'
+        }}
+      </div>
+    </div>
+
+    <button class="btn btn-primary w-100" (click)="applyFilters()">
+      {{ 'PROPERTY.APPLY_FILTERS' | translate }}
+    </button>
+  </div>
+
+
+</div>

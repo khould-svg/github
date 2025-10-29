@@ -1,0 +1,27 @@
+<app-page-title [title]="'CUSTOMERS.TITLE' | translate" [subTitle]="'CUSTOMERS.SEARCH' | translate"></app-page-title>
+
+<div class="row">
+  <div class="col-lg-8 col-md-10">
+    <div class="card">
+      <div class="card-header bg-light-subtle">
+        <h4 class="card-title">{{ 'CUSTOMERS.SEARCH_CUSTOMERS' | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 position-relative">
+          <label for="customerSearchInput" class="visually-hidden">
+            {{ 'CUSTOMERS.SEARCH_PLACEHOLDER' | translate }}
+          </label>
+          <input id="customerSearchInput" type="text" class="form-control"
+            [placeholder]="'CUSTOMERS.SEARCH_PLACEHOLDER' | translate" [value]="query" (input)="handleInput($event)"
+            (keydown.enter)="tryNavigateSelected()" list="customerNames" autocomplete="off" />
+          <datalist id="customerNames">
+            <option *ngFor="let cust of filteredCustomers" [value]="getCustomerName(cust)"></option>
+          </datalist>
+        </div>
+        <button class="btn btn-primary" (click)="tryNavigateSelected()">
+          {{ 'CUSTOMERS.GO_TO_DETAILS' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

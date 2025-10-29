@@ -1,0 +1,58 @@
+<app-page-title [title]="'CUSTOMERS.TITLE' | translate" [subTitle]="'CUSTOMERS.CUSTOMERS_GRID' | translate" />
+
+<div class="d-flex justify-content-end mb-4">
+  <div class="position-relative" style="width: 280px; max-width: 100%;">
+    <input type="text" [placeholder]="'CUSTOMERS.SEARCH_PLACEHOLDER' | translate" [(ngModel)]="searchText"
+      (input)="filterCustomers()" class="form-control pe-5 rounded-pill border shadow-sm
+             dark:bg-gray-800 dark:text-white dark:border-gray-700" />
+    <button type="button" (click)="filterCustomers()"
+      class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+      style="width: 36px; height: 36px;">
+      <i class="ri-search-line"></i>
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  @for (item of filteredCustomers; track $index) {
+  <div class="col-md-6 col-xl-4 mb-4">
+    <div class="card overflow-hidden shadow-sm h-100">
+      <div class="card-body">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img [src]="item.profileImage || 'assets/images/default-avatar.png'" alt="profile"
+            class="rounded-circle border" style="width: 60px; height: 60px;" />
+          <div>
+
+            <h5 class="mb-1 fw-semibold">{{ getDisplayName(item) }}</h5>
+            <span class="badge" [ngClass]="
+                  item.status === 'confirmed'
+                    ? 'bg-success'
+                    : item.status === 'pending'
+                    ? 'bg-warning'
+                    : 'bg-danger'
+                ">
+              {{ item.status }}
+            </span>
+          </div>
+        </div>
+
+        <p class="mb-1"><strong>{{ 'CUSTOMER_DETAILS.EMAIL' | translate }}:</strong> {{ item.email }}</p>
+        <p class="mb-1"><strong>{{ 'CUSTOMER_DETAILS.PHONE' | translate }}:</strong> {{ item.phone }}</p>
+        <p class="mb-1"><strong>{{ 'CUSTOMER_DETAILS.COUNTRY' | translate }}:</strong> {{ item.country }}</p>
+        <p class="mb-1"><strong>{{ 'CUSTOMER_DETAILS.ROLE' | translate }}:</strong> {{ item.role }}</p>
+
+        <div class="d-flex gap-2 mt-3">
+          <a class="btn btn-sm btn-primary" [routerLink]="['/customers/details', (item._id || item.id)]">
+            {{ 'TRANSACTIONS.TRANSACTION_DETAILS' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+
+<div *ngIf="filteredCustomers.length === 0" class="alert alert-info text-center">
+  {{ 'CUSTOMERS.ALL_CUSTOMERS_LIST' | translate }} - {{ 'COMMON.NONE' | translate }}
+</div>

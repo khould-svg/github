@@ -1,0 +1,165 @@
+<div class="card shadow-lg border-0 rounded-3" *ngIf="property">
+  <div class="card-body p-4">
+
+    <ng-container *ngIf="!editMode; else editTemplate">
+      <property-info [property]="property"></property-info>
+      <div class="mt-4">
+        <h5 class="fw-semibold">{{ 'PROPERTY.CYCLES' | translate }}</h5>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let cycle of cycles" class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ 'PROPERTY.PERIOD' | translate }}:</strong> {{ cycle.periodStart | date:'shortDate' }} - {{ cycle.periodEnd |
+                date:'shortDate' }}
+                <br />
+                <strong>{{ 'PROPERTY.GROSS_COLLECTED' | translate }}:</strong> {{ currency }} {{ cycle.grossCollected }} <br />
+                <strong>{{ 'PROPERTY.EXPENSES' | translate }}:</strong> {{ currency }} {{ cycle.expenses }} <br />
+                <strong>{{ 'PROPERTY.MANAGEMENT_FEE' | translate }}:</strong> {{ currency }} {{ cycle.managementFee }} <br />
+                <strong>{{ 'PROPERTY.RESERVE_FOR_CAPEX' | translate }}:</strong> {{ currency }} {{ cycle.reserveForCapEx }} <br />
+                <strong>{{ 'PROPERTY.TAXES' | translate }}:</strong> {{ currency }} {{ cycle.taxes }} <br />
+                <strong>{{ 'PROPERTY.NOTES' | translate }}:</strong> {{ cycle.notes }} <br />
+              </div>
+            </div>
+          </li>
+          <li *ngIf="cycles.length === 0" class="list-group-item text-muted">
+            {{ 'PROPERTY.NO_CYCLES' | translate }}
+          </li>
+        </ul>
+
+        <button *ngIf="isAdmin && !showCreateCycleForm" class="btn btn-outline-primary btn-sm mt-2"
+          (click)="showCreateCycleForm=true">
+          <i class="ri-add-line"></i> {{ 'PROPERTY.CREATE_CYCLE' | translate }}
+        </button>
+
+        <div *ngIf="showCreateCycleForm" class="card p-3 mt-2 shadow-sm border">
+          <h6>{{ 'PROPERTY.CREATE_NEW_CYCLE' | translate }}</h6>
+          <form [formGroup]="cycleForm" (ngSubmit)="submitCycleForm()">
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.PERIOD_START' | translate }}</label>
+              <input type="date" class="form-control" formControlName="periodStart">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.PERIOD_END' | translate }}</label>
+              <input type="date" class="form-control" formControlName="periodEnd">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.GROSS_COLLECTED' | translate }}</label>
+              <input type="number" class="form-control" formControlName="grossCollected">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.EXPENSES' | translate }}</label>
+              <input type="number" class="form-control" formControlName="expenses">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.MANAGEMENT_FEE' | translate }}</label>
+              <input type="number" class="form-control" formControlName="managementFee">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.RESERVE_FOR_CAPEX' | translate }}</label>
+              <input type="number" class="form-control" formControlName="reserveForCapEx">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.TAXES' | translate }}</label>
+              <input type="number" class="form-control" formControlName="taxes">
+            </div>
+            <div class="mb-2">
+              <label>{{ 'PROPERTY.NOTES' | translate }}</label>
+              <textarea class="form-control" rows="2" formControlName="notes"></textarea>
+            </div>
+
+            <div class="d-flex gap-2 mt-2">
+              <button type="submit" class="btn btn-success btn-sm">{{ 'PROPERTY.SAVE' | translate }}</button>
+              <button type="button" class="btn btn-secondary btn-sm" (click)="showCreateCycleForm=false">{{ 'COMMON.CLOSE' | translate }}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div *ngIf="isAdmin" class="d-flex gap-2 mt-3">
+        <button type="button" class="btn btn-outline-primary btn-sm" (click)="enableEdit()" title="{{ 'PROPERTY.EDIT_PROPERTY' | translate }}">
+          <i class="ri-edit-2-line"></i> {{ 'PROPERTY.EDIT' | translate }}
+        </button>
+        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteProperty()" title="{{ 'PROPERTY.DELETE' | translate }}">
+          <i class="ri-delete-bin-6-line"></i> {{ 'PROPERTY.DELETE' | translate }}
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #editTemplate>
+      <form [formGroup]="propertyForm" (ngSubmit)="saveChanges()" class="mt-3">
+        <h5 class="fw-semibold mb-3">{{ 'PROPERTY.EDIT_PROPERTY' | translate }}</h5>
+        <ul class="list-group list-group-flush shadow-sm rounded">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.NAME' | translate }}</strong>
+            <input type="text" class="form-control w-50" formControlName="name" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.LOCATION' | translate }}</strong>
+            <input type="text" class="form-control w-50" formControlName="location" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.TYPE' | translate }}</strong>
+            <input type="text" class="form-control w-50" formControlName="type" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.TOTAL_VALUE' | translate }} ({{currency}})</strong>
+            <input type="number" class="form-control w-50" formControlName="totalValue" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.MIN_INVESTMENT' | translate }} ({{currency}})</strong>
+            <input type="number" class="form-control w-50" formControlName="minInvestment" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.EXPECTED_NET_YIELD' | translate }}</strong>
+            <input type="number" class="form-control w-50" formControlName="expectedNetYield" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.EXPECTED_ANNUAL_RETURN' | translate }}</strong>
+            <input type="number" class="form-control w-50" formControlName="expectedAnnualReturn" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.HOLDING_PERIOD_MONTHS' | translate }}</strong>
+            <input type="number" class="form-control w-50" formControlName="holdingPeriodMonths" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.TOTAL_SHARES' | translate }}</strong>
+            <input type="number" class="form-control w-50" formControlName="totalShares" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'PROPERTY.RENTED' | translate }}</strong>
+            <select class="form-select w-50" formControlName="isRented">
+              <option [value]="true">{{ 'COMMON.YES' | translate }}</option>
+              <option [value]="false">{{ 'COMMON.NO' | translate }}</option>
+            </select>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngIf="propertyForm.get('isRented')?.value">
+            <strong>{{ 'PROPERTY.CURRENT_RENT' | translate }} ({{currency}})</strong>
+            <input type="number" class="form-control w-50" formControlName="currentRent" />
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <strong>{{ 'TRANSACTIONS.STATUS' | translate }}</strong>
+            <select class="form-select w-50" formControlName="status">
+              <option value="available">{{ 'PROPERTY.STATUS_AVAILABLE' | translate }}</option>
+              <option value="pending">{{ 'PROPERTY.STATUS_PENDING' | translate }}</option>
+              <option value="sold">{{ 'PROPERTY.STATUS_SOLD' | translate }}</option>
+            </select>
+          </li>
+          <li class="list-group-item">
+            <strong>{{ 'PROPERTY.DESCRIPTION' | translate }}</strong>
+            <textarea rows="3" class="form-control mt-2" formControlName="description"></textarea>
+          </li>
+        </ul>
+
+        <div class="d-flex gap-2 mt-4">
+          <button type="submit" class="btn btn-success btn-sm">
+            <i class="ri-save-3-line me-1"></i> {{ 'PROPERTY.SAVE' | translate }}
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" (click)="editMode=false">
+            <i class="ri-close-circle-line me-1"></i> {{ 'COMMON.CLOSE' | translate }}
+          </button>
+        </div>
+      </form>
+    </ng-template>
+  </div>
+</div>

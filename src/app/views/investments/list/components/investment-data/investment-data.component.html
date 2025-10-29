@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">{{ 'INVESTMENT.ALL_INVESTMENTS_LIST' | translate }}</h4>
+  </div>
+
+  <div class="card-body">
+    <div class="mb-3">
+      <input type="text" class="form-control" placeholder="{{ 'INVESTMENT.SEARCH_PLACEHOLDER' | translate }}"
+        [(ngModel)]="searchText" (ngModelChange)="filterInvestments()" />
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead>
+          <tr>
+            <th>{{ 'INVESTMENT.PROPERTY_INVESTMENT' | translate }}</th>
+            <th>{{ 'INVESTMENT.AMOUNT_INVESTED' | translate }}</th>
+            <th>{{ 'INVESTMENT.SHARES_PURCHASED' | translate }}</th>
+            <th>{{ 'INVESTMENT.INVESTMENT_DATE' | translate }}</th>
+            <th>{{ 'INVESTMENT.STATUS' | translate }}</th>
+            <th>{{ 'INVESTMENT.ACTION' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of paginatedInvestments">
+            <td>{{ item.property?.name }}</td>
+            <td>{{ currency }}{{ item.amountInvested }}</td>
+            <td>{{ item.sharesPurchased }}</td>
+            <td>{{ formatDate(item.investmentDate) }}</td>
+            <td>
+              <span [class]="getStatusClass(item.status)">
+                {{ item.status }}
+              </span>
+            </td>
+            <td>
+              <div class="d-flex gap-2">
+                <a href="javascript:void(0);" class="btn btn-light btn-sm" (click)="openInvestmentModal(investmentModal, item)"
+                  title="View Investment Details" [attr.aria-label]="'View details for ' + (item.property?.name || '')">
+                  <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+                </a>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="collectionSize"
+      (pageChange)="refreshInvestments()">
+    </ngb-pagination>
+  </div>
+</div>
+
+<ng-template #investmentModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ 'INVESTMENT.INVESTMENT_DETAILS' | translate }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <h6>{{ 'INVESTMENT.PROPERTY_INFORMATION' | translate }}</h6>
+    <p>
+      <b>{{ 'INVESTMENT.NAME' | translate }}:</b>
+      {{ selectedInvestment?.property?.name }}
+    </p>
+    <p>
+      <b>{{ 'INVESTMENT.LOCATION' | translate }}:</b>
+      {{ selectedInvestment?.property?.location }}
+    </p>
+    <p>
+      <b>{{ 'INVESTMENT.TYPE' | translate }}:</b>
+      {{ selectedInvestment?.property?.type }}
+    </p>
+    <hr />
+    <p>
+      <b>{{ 'INVESTMENT.AMOUNT_INVESTED' | translate }}:</b>
+      {{ currency }}{{ selectedInvestment?.amountInvested }}
+    </p>
+    <p>
+      <b>{{ 'INVESTMENT.SHARES_PURCHASED' | translate }}:</b>
+      {{ selectedInvestment?.sharesPurchased }}
+    </p>
+    <p>
+      <b>{{ 'INVESTMENT.INVESTMENT_DATE' | translate }}:</b>
+      {{ formatDate(selectedInvestment?.investmentDate) }}
+    </p>
+    <p>
+      <b>{{ 'INVESTMENT.STATUS_RETURNS' | translate }}:</b>
+      {{ selectedInvestment?.status }} / {{ selectedInvestment?.returns }}%
+    </p>
+  </div>
+</ng-template>

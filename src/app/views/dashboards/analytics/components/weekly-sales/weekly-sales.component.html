@@ -1,0 +1,64 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">{{ 'ANALYTICS.WEEKLY_SALES' | translate }}</h4>
+  </div>
+  <div class="card-body">
+    <div
+      id="carouselExampleCaptions"
+      class="carousel slide"
+      data-bs-ride="carousel"
+    >
+      <ngb-carousel [showNavigationIndicators]="false">
+        <ng-template ngbSlide>
+          <img
+            src="assets/images/properties/p-9.jpg"
+            class="d-block w-100 rounded"
+            alt="img-6"
+          />
+        </ng-template>
+        <ng-template ngbSlide>
+          <img
+            src="assets/images/properties/p-7.jpg"
+            class="d-block w-100 rounded"
+            alt="img-7"
+          />
+        </ng-template>
+        <ng-template ngbSlide>
+          <img
+            src="assets/images/properties/p-8.jpg"
+            class="d-block w-100 rounded"
+            alt="img-5"
+          />
+        </ng-template>
+        <ng-template ngbSlide>
+          <img
+            src="assets/images/properties/p-6.jpg"
+            class="d-block w-100 rounded"
+            alt="img-"
+          />
+        </ng-template>
+        <ng-template ngbSlide>
+          <img
+            src="assets/images/properties/p-10.jpg"
+            class="d-block w-100 rounded"
+            alt="img-5"
+          />
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+  </div>
+  <div
+    class="card-footer border-top d-flex flex-column lign-items-center justify-content-between"
+  >
+    <h4 class="text-muted   mb-2">
+      <span class="text-dark me-1">{{ 'ANALYTICS.TOTAL_PROPERTIES' | translate }} :  </span>{{ stats?.totalProperties || 0 }}
+    </h4>
+    <h4 class="text-muted   mb-2">
+      <span class="text-dark me-1">{{ 'ANALYTICS.AVAILABLE_PROPERTIES' | translate }} : </span>{{ stats?.availableProperties || 0 }}
+    </h4>
+    <h4 class="text-muted   mb-2">
+      <span class="text-dark me-1">{{ 'ANALYTICS.SOLD_PROPERTIES' | translate }} :  </span>{{ stats?.soldProperties || 0 }}
+    </h4>
+  </div>
+</div>

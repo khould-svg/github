@@ -1,0 +1,78 @@
+<div *ngIf="loading" class="alert alert-info">{{ 'CUSTOMER_DETAILS.LOADING_CUSTOMER' | translate }}...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div class="row">
+  <div class="col-xl-8 col-lg-12">
+
+    <customer-info [customer]="customer" (editRequested)="enableEdit()" />
+
+    <div class="card mt-3" *ngIf="editMode">
+      <div class="card-body">
+        <form [formGroup]="customerForm" (ngSubmit)="saveChanges()">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.NAME' | translate }}</label>
+              <input type="text" class="form-control" formControlName="name" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.EMAIL' | translate }}</label>
+              <input type="email" class="form-control" formControlName="email" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.PHONE' | translate }}</label>
+              <input type="text" class="form-control" formControlName="phone" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.COUNTRY' | translate }}</label>
+              <input type="text" class="form-control" formControlName="country" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.STATUS' | translate }}</label>
+              <select class="form-select" formControlName="status">
+                <option value="">{{ 'CUSTOMER_DETAILS.SELECT_STATUS' | translate }}</option>
+                <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">{{ 'CUSTOMER_DETAILS.ROLE' | translate }}</label>
+              <select class="form-select" formControlName="role">
+                <option value="">{{ 'CUSTOMER_DETAILS.SELECT_ROLE' | translate }}</option>
+                <option *ngFor="let r of roleOptions" [value]="r">{{ r }}</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="mt-3 d-flex gap-2">
+            <button class="btn btn-primary" type="submit" [disabled]="saving">{{ 'CUSTOMER_DETAILS.SAVE' | translate
+              }}</button>
+            <button type="button" class="btn btn-light" (click)="editMode=false">{{ 'CUSTOMER_DETAILS.CANCEL' |
+              translate }}</button>
+          </div>
+
+          <div *ngIf="saveError" class="text-danger mt-2">{{ saveError }}</div>
+        </form>
+      </div>
+    </div>
+
+    <!-- <customer-property-card />
+    <customer-interested-property /> -->
+  </div>
+  <div class="col-xl-4 col-lg-12">
+    <customer-transactions [userId]="(customer?._id ?? customer?.id) ?? ''"
+      [ibanImageUrl]="customer?.ibanImageUrl ?? ''" [ibanNumber]="customer?.iban ?? ''"
+      [walletId]="(customer?.walletId ?? customer?.wallet?._id ?? customer?.wallet?.id) ?? ''">
+    </customer-transactions>
+  </div>
+
+  <div class="row">
+    <div class="col-xl-12">
+      <customer-transaction-history [userId]="(customer?._id ?? customer?.id) ?? ''" />
+    </div>
+  </div>
